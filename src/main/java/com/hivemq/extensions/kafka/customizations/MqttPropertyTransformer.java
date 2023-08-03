@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hivemq.extensions.kafka.customizations.helloworld;
+package com.hivemq.extensions.kafka.customizations;
 
 import com.hivemq.extension.sdk.api.annotations.NotNull;
 import com.hivemq.extension.sdk.api.packets.publish.PublishPacket;
@@ -51,16 +51,16 @@ import java.util.List;
  *
  * @author Georg Held
  */
-public class MqttToKafkaHelloWorldTransformer implements MqttToKafkaTransformer {
+public class MqttPropertyTransformer implements MqttToKafkaTransformer {
 
-    private static final @NotNull Logger log = LoggerFactory.getLogger(MqttToKafkaHelloWorldTransformer.class);
+    private static final @NotNull Logger log = LoggerFactory.getLogger(MqttPropertyTransformer.class);
 
     @Override
     public void init(final @NotNull MqttToKafkaInitInput input) {
         final KafkaCluster kafkaCluster = input.getKafkaCluster();
 
         log.info(
-                "Hello-World-Transformer for Kafka cluster '{}' with boot strap servers '{}' initialized.",
+                "KEY-TRANSFORMER Hello-I-am-The-MQTT-Property-Transformer for Kafka cluster '{}' with boot strap servers '{}' initialized.",
                 kafkaCluster.getId(),
                 kafkaCluster.getBootstrapServers());
     }
@@ -75,13 +75,14 @@ public class MqttToKafkaHelloWorldTransformer implements MqttToKafkaTransformer 
         final KafkaTopicService kafkaTopicService = mqttToKafkaInput.getKafkaTopicService();
 
         // first transform the mqtt topic to a Kafka topic
-        final String kafkaTopic = KafkaTopicUtil.mqttToKafkaTopic(mqttTopic);
+        // final String kafkaTopic = KafkaTopicUtil.mqttToKafkaTopic(mqttTopic);
+        final String kafkaTopic = "from-transformer";
 
-        // check if kafkaTopic exists on the Kafka cluster
+                // check if kafkaTopic exists on the Kafka cluster
         KafkaTopicService.KafkaTopicState state = kafkaTopicService.getKafkaTopicState(kafkaTopic);
         if (state == KafkaTopicService.KafkaTopicState.MISSING) {
             log.info(
-                    "Kafka topic '{}' does not exist on the Kafka cluster '{}'. Creating it.",
+                    "KEY-TRANSFORMER Kafka topic '{}' does not exist on the Kafka cluster '{}'. Creating it.",
                     kafkaTopic,
                     kafkaClusterId);
 
@@ -91,7 +92,7 @@ public class MqttToKafkaHelloWorldTransformer implements MqttToKafkaTransformer 
 
         if (state == KafkaTopicService.KafkaTopicState.FAILURE) {
             log.warn(
-                    "Kafka topic operations for topic '{}' and Kafka cluster '{}' failed. Dropping MQTT message on topic '{}'.",
+                    "KEY-TRANSFORMER Kafka topic operations for topic '{}' and Kafka cluster '{}' failed. Dropping MQTT message on topic '{}'.",
                     kafkaTopic,
                     kafkaClusterId,
                     mqttTopic);
@@ -100,7 +101,7 @@ public class MqttToKafkaHelloWorldTransformer implements MqttToKafkaTransformer 
         }
 
         if (log.isTraceEnabled()) {
-            log.trace("Pushing a new Kafka record to topic '{}' on cluster '{}'.", kafkaTopic, kafkaClusterId);
+            log.trace("KEY-TRANSFORMER Pushing a new Kafka record to topic '{}' on cluster '{}'.", kafkaTopic, kafkaClusterId);
         }
 
         // get a new Kafka record builder
@@ -115,6 +116,9 @@ public class MqttToKafkaHelloWorldTransformer implements MqttToKafkaTransformer 
         publishPacket.getUserProperties()
                 .asList()
                 .forEach(userProperty -> recordBuilder.header(userProperty.getName(), userProperty.getValue()));
+
+        // convert user property kafkaKey to Kafka record's key
+        publishPacket.getUserProperties().getFirst("kafkaKey").ifPresent(kafkaKey -> recordBuilder.key(kafkaKey));
 
         // build and set the Kafka record that the HiveMQ Enterprise Extension for Kafka will push
         mqttToKafkaOutput.setKafkaRecords(List.of(recordBuilder.build()));

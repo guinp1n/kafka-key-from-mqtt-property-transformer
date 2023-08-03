@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hivemq.extensions.kafka.customizations.helloworld;
+package com.hivemq.extensions.kafka.customizations;
 
 import com.hivemq.extension.sdk.api.packets.general.UserProperties;
 import com.hivemq.extension.sdk.api.packets.general.UserProperty;
@@ -36,7 +36,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class MqttToKafkaHelloWorldTransformerTest {
+class MqttPropertyTransformerTest {
 
     // mock objects
     private MqttToKafkaInput input;
@@ -48,7 +48,7 @@ class MqttToKafkaHelloWorldTransformerTest {
     private UserProperty userProperty;
 
     // test object
-    private MqttToKafkaHelloWorldTransformer transformer;
+    private MqttPropertyTransformer transformer;
 
     @BeforeEach
     void setUp() {
@@ -84,7 +84,7 @@ class MqttToKafkaHelloWorldTransformerTest {
         when(userProperty.getValue()).thenReturn("test-value");
         when(publishPacket.getUserProperties()).thenReturn(userProperties);
 
-        transformer = new MqttToKafkaHelloWorldTransformer();
+        transformer = new MqttPropertyTransformer();
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

@@ -1,4 +1,4 @@
-rootProject.name = "hivemq-kafka-hello-world-customization"
+rootProject.name = "mqtt-property-transformer"
 
 pluginManagement {
     plugins {

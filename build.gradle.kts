@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.hivemq.extensions.kafka.customizations"
-description = "Hello World Customization for the HiveMQ Enterprise Extensions for Kafka"
+description = "Transformer for Kafka. Reads Kafka record 'key' from an MQTT packet user property 'kafkaKey' rather then default mqttTopic."
 
 java {
     toolchain {

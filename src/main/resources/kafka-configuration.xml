@@ -33,7 +33,7 @@
             <mqtt-topic-filters>
                 <mqtt-topic-filter>transform/#</mqtt-topic-filter>
             </mqtt-topic-filters>
-            <transformer>com.hivemq.extensions.kafka.customizations.helloworld.MqttToKafkaHelloWorldTransformer</transformer>
+            <transformer>com.hivemq.extensions.kafka.customizations.MqttPropertyTransformer</transformer>
         </mqtt-to-kafka-transformer>
     </mqtt-to-kafka-transformers>
 
@@ -44,7 +44,7 @@
             <kafka-topics>
                 <kafka-topic>transform</kafka-topic>
             </kafka-topics>
-            <transformer>com.hivemq.extensions.kafka.customizations.helloworld.KafkaToMqttHelloWorldTransformer</transformer>
+            <transformer>com.hivemq.extensions.kafka.customizations.kafkakeyfrommqttproperty.KafkaToMqttHelloWorldTransformer</transformer>
         </kafka-to-mqtt-transformer>
     </kafka-to-mqtt-transformers>
 </kafka-configuration>
