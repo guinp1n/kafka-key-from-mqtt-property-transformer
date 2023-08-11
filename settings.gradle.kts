@@ -1,4 +1,4 @@
-rootProject.name = "mqtt-property-transformer"
+rootProject.name = "user-property-transformer"
 
 pluginManagement {
     plugins {
