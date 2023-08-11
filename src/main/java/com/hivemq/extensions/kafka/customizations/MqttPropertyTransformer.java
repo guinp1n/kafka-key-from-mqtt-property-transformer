@@ -60,7 +60,7 @@ public class MqttPropertyTransformer implements MqttToKafkaTransformer {
         final KafkaCluster kafkaCluster = input.getKafkaCluster();
 
         log.info(
-                "KEY-TRANSFORMER Hello-I-am-The-MQTT-Property-Transformer for Kafka cluster '{}' with boot strap servers '{}' initialized.",
+                "KEY-TRANSFORMER Hello-I-am-The-user-property-transformer for Kafka cluster '{}' with boot strap servers '{}' initialized.",
                 kafkaCluster.getId(),
                 kafkaCluster.getBootstrapServers());
     }
